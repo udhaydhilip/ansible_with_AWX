@@ -57,7 +57,18 @@ You can use the `awx-pod-debug.yaml` file to launch a temporary pod with mounted
 ./cleanup.sh
 ```
 
+✅ Save this script as cleanup.sh and make it executable with:
+
+```bash
+chmod +x cleanup.sh
+```
+
 ### Start Debug Pod
+
+Notes:
+PVC Name (awx-receptor-pvc): Adjust based on your actual PVC name used by the awx-task pod (you can find it via kubectl get pvc -n awx).
+Secret/ConfigMap Names: Replace awx-admin-password and awx-configmap with actual resource names from your AWX deployment if they differ.
+Image: Uses ubuntu:22.04 for a basic environment—feel free to change to alpine, busybox, or another debug-friendly image.
 
 ```bash
 kubectl apply -f awx-pod-debug.yaml -n awx
