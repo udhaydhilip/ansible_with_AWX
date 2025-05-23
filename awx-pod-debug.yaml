@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: awx-debug
+  namespace: awx
+spec:
+  containers:
+    - name: debug-container
+      image: ubuntu:22.04
+      command: ["/bin/bash", "-c", "--"]
+      args: ["while true; do sleep 3600; done"]
+      volumeMounts:
+        - name: receptor-volume
+          mountPath: /receptor
+        - name: secret-volume
+          mountPath: /secrets
+        - name: configmap-volume
+          mountPath: /configmaps
+      securityContext:
+        runAsUser: 0
+  volumes:
+    - name: receptor-volume
+      persistentVolumeClaim:
+        claimName: awx-receptor-pvc
+    - name: secret-volume
+      secret:
+        secretName: awx-admin-password
+        optional: true
+    - name: configmap-volume
+      configMap:
+        name: awx-configmap
+        optional: true
+  restartPolicy: Never
